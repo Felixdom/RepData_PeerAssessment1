@@ -116,5 +116,5 @@ by.interval1<-group_by(datnew, dayweek, interval)
 step.series1<-summarise(by.interval1, meanstep1=mean(steps))
 qplot(interval,meanstep1, data=step.series1,facets=dayweek~. ,geom="line", 
       main="Activity patterns: weekdays and weekends", xlab="5 minutes interval",
-      ylab="Average number of steps")
+      ylab="Average number of steps").
 ```
