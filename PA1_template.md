@@ -38,7 +38,7 @@ library("ggplot2")
 
 ```r
 by.day<-group_by(data, date)
-steps.day<-summarise(by.day, total=sum(steps,na.rm=T))
+steps.day<-summarise(by.day, total=sum(steps))
 steps.day
 ```
 
@@ -46,14 +46,14 @@ steps.day
 ## Source: local data frame [61 x 2]
 ## 
 ##          date total
-## 1  2012-10-01     0
+## 1  2012-10-01    NA
 ## 2  2012-10-02   126
 ## 3  2012-10-03 11352
 ## 4  2012-10-04 12116
 ## 5  2012-10-05 13294
 ## 6  2012-10-06 15420
 ## 7  2012-10-07 11015
-## 8  2012-10-08     0
+## 8  2012-10-08    NA
 ## 9  2012-10-09 12811
 ## 10 2012-10-10  9900
 ## ..        ...   ...
@@ -67,16 +67,16 @@ summary(steps.day)
 
 ```
 ##          date        total      
-##  2012-10-01: 1   Min.   :    0  
-##  2012-10-02: 1   1st Qu.: 6778  
-##  2012-10-03: 1   Median :10395  
-##  2012-10-04: 1   Mean   : 9354  
-##  2012-10-05: 1   3rd Qu.:12811  
+##  2012-10-01: 1   Min.   :   41  
+##  2012-10-02: 1   1st Qu.: 8841  
+##  2012-10-03: 1   Median :10765  
+##  2012-10-04: 1   Mean   :10766  
+##  2012-10-05: 1   3rd Qu.:13294  
 ##  2012-10-06: 1   Max.   :21194  
-##  (Other)   :55
+##  (Other)   :55   NA's   :8
 ```
-Mean is 9.354 steps.  
-Median is 10.395 steps
+Mean is 10.765 steps.  
+Median is 10.766 steps
 
 ####Histogram of the total number of steps taken each day
 
@@ -146,8 +146,7 @@ sum(is.na(data$steps))
 ####Strategy for filling in all of the missing values in the dataset
 Use the mean for that 5-minute interval.
 
-####New dataset that is equal to the original dataset but with the missing 
-data filled in.
+####New dataset that is equal to the original dataset but with the missing data filled in.
 
 ```r
 datnew<-data
@@ -176,7 +175,7 @@ qplot(sum, data=step.day2,main="Total number of steps taken each day (II)",
       xlab="Number of steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
 ####Mean and median total number of steps taken per day.
 
@@ -195,16 +194,15 @@ summary(step.day2)
 ##  (Other)   :55
 ```
 
-####Impact of imputing missing data
-Decreases the number of days with few steps.  
-Increases the median and mean.  
-Significantly increase days with about 11.000 steps (around median and mean)
+####Impact of imputing missing data  
+Very slight increase the mean.
+The middle values rise.  
+I don´t apprecited a significant impact of imputing missing data.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-####Create a new factor variable in the dataset with two levels – “weekday” and 
-“weekend”
+####Create a new factor variable in the dataset with two levels – “weekday” and “weekend”
 
 ```r
 datnew$dayweek<-weekdays(as.Date(datnew$date))

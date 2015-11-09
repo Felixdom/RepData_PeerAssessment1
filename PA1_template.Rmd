@@ -7,7 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
-```{r ,results='hide'}
+```{r load, results='hide'}
 data<-read.csv("activity.csv",sep=",",header=T)
 head(data)
 summary(data)
@@ -22,9 +22,9 @@ library("ggplot2")
 ```
 
 ####Total number of steps taken per day
-```{r}
+```{r ,echo=TRUE}
 by.day<-group_by(data, date)
-steps.day<-summarise(by.day, total=sum(steps,na.rm=T))
+steps.day<-summarise(by.day, total=sum(steps))
 steps.day
 ```
 
@@ -32,8 +32,8 @@ steps.day
 ```{r}
 summary(steps.day)
 ```
-Mean is 9.354 steps.  
-Median is 10.395 steps
+Mean is 10.765 steps.  
+Median is 10.766 steps
 
 ####Histogram of the total number of steps taken each day
 ```{r histogram}
@@ -70,8 +70,7 @@ sum(is.na(data$steps))
 ####Strategy for filling in all of the missing values in the dataset
 Use the mean for that 5-minute interval.
 
-####New dataset that is equal to the original dataset but with the missing 
-data filled in.
+####New dataset that is equal to the original dataset but with the missing data filled in.
 ```{r}
 datnew<-data
 datnew$mean<-steps.series$meanstep
@@ -93,16 +92,15 @@ qplot(sum, data=step.day2,main="Total number of steps taken each day (II)",
 summary(step.day2)
 ```
 
-####Impact of imputing missing data
-Decreases the number of days with few steps.  
-Increases the median and mean.  
-Significantly increase days with about 11.000 steps (around median and mean)
+####Impact of imputing missing data  
+Very slight increase the mean.
+The middle values rise.  
+I don´t apprecited a significant impact of imputing missing data.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-####Create a new factor variable in the dataset with two levels – “weekday” and 
-“weekend”
+####Create a new factor variable in the dataset with two levels – “weekday” and “weekend”
 ```{r}
 datnew$dayweek<-weekdays(as.Date(datnew$date))
 datnew$dayweek[datnew$dayweek=="sábado"|datnew$dayweek=="domingo"]<-"weekend"
@@ -116,5 +114,5 @@ by.interval1<-group_by(datnew, dayweek, interval)
 step.series1<-summarise(by.interval1, meanstep1=mean(steps))
 qplot(interval,meanstep1, data=step.series1,facets=dayweek~. ,geom="line", 
       main="Activity patterns: weekdays and weekends", xlab="5 minutes interval",
-      ylab="Average number of steps").
+      ylab="Average number of steps")
 ```
